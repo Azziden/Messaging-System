@@ -1,37 +1,36 @@
-import smtplib
 import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Credenciales de correo electrónico
-correo_origen = os.environ['CORREO_ELECTRONICO']
-contraseña = os.environ['CONTRASEÑA']
+# Email credentials
+source_mail = os.environ['EMAIL']
+password = os.environ['PASSWORD']
 
-# Configuración del servidor SMTP de Gmail
-servidor_smtp = 'smtp.gmail.com'
-puerto_smtp = 587
+# Gmail SMTP Server Settings
+server_smtp = 'smtp.gmail.com'
+port_smtp = 587
 
-# Crea un objeto de mensaje MIME
-mensaje = MIMEMultipart()
-mensaje['From'] = correo_origen
-mensaje['To'] = 'destinatario@example.com'
-mensaje['Subject'] = 'Asunto del correo electrónico'
+# Create a MIME message object
+message = MIMEMultipart()
+message['From'] = source_mail
+message['To'] = 'addressee@example.com'
+message['Subject'] = 'Email Subject'
 
-# Cuerpo del correo electrónico
-cuerpo = 'Este es el cuerpo del correo electrónico.'
-mensaje.attach(MIMEText(cuerpo, 'plain'))
+# Email Body
+body = 'This is the body of the email.'
+message.attach(MIMEText(body, 'plain'))
 
-# Crea una conexión al servidor SMTP de Gmail
-smtp_server = smtplib.SMTP(servidor_smtp, puerto_smtp)
+# Create a connection to the Gmail SMTP server
+smtp_server = smtplib.SMTP(server_smtp, port_smtp)
 smtp_server.starttls()
 
-# Inicia sesión en la cuenta de correo electrónico
-smtp_server.login(correo_origen, contraseña)
+# Sign in to the email account
+smtp_server.login(source_mail, password)
 
-# Envía el correo electrónico
-texto = mensaje.as_string()
-smtp_server.sendmail(correo_origen, 'destinatario@example.com', texto)
+# Send the email
+texto = message.as_string()
+smtp_server.sendmail(source_mail, 'addressee@example.com', texto)
 
-# Cierra la conexión al servidor SMTP
+# Close the connection to the SMTP server
 smtp_server.quit()
